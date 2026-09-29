@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <p id="parrafito"></p>
+
+    <h1>Modificando el código HTML</h1>
+    <p id="prueba">Modificando el contenido.</p>
+    <button type="button" onclick="document.getElementById('prueba').innerHTML = 'CAMBIANDO el contenido!'">
+       ¡Dale!
+    </button>
+    <script>
+        document.getElementById("parrafito").innerHTML = 5 + 6;
+        document.write("<h2>Buenos díias</h2>");
+        document.alert("BUENAS NOCHES");
+    </script>
+
+    <br><br><hr><br><br>
+
+    <h1>Cambio de imágenes con JavaScript</h1>
+    <img id="myFPImage"
+       onclick="cambiaPic()"
+       src="../assets/img/gato1.png"
+       width="500"
+       height="500">
+    <p>Haz click sobre las letras para cambiarlas.</p>
+
+    <script>
+      function cambiaPic() {
+          var image = document.getElementById('myFPImage');
+          if (image.src.match("2")) {
+              image.src = "../assets/img/gato1.png";
+          } else {
+              image.src = "../assets/img/gato2.png";
+          }
+      }
+    </script>
+
+    <br><br><hr><br><br>
+
+    <p id="mytxt">Aprende JavaScript con MyFPSchool!</p>
+    <button type="button" onclick="myFunction()">Dale!</button>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("mytxt");
+            x.style.fontSize = "25px";
+            x.style.color = "red";
+        }
+    </script>
+</body>
+</html>

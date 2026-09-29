@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <h1>Prueba de Métodos de Salida en JavaScript</h1>
+    <p id="previo">Contenido previo...</p>
+
+    <button onclick="mostrarAlerta()">1. Ventana Alerta</button>
+    <button onclick="mostrarEnConsola()">2. Mensaje en Consola</button>
+    <button onclick="modificarDOM()">3. Modificar DOM (innerHTML)</button>
+    <button onclick="usarDocumentWrite()">4. Document Write</button>
+    <script>
+        function mostrarAlerta() {
+            alert("Mostrando mensaje de alerta");
+        }
+
+        function mostrarEnConsola() {
+            console.log("Hola soy un mensaje en la consola");
+        }
+
+        function modificarDOM() {
+            document.getElementById("previo").innerHTML =
+                "<strong>Contenido nuevo modificado con innerHTML</strong>";
+        }
+
+        function usarDocumentWrite() {
+            document.write("<h2>Texto escrito con document.write</h2>");
+        }
+    </script>
+</body>
+</html>

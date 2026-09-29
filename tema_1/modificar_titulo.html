@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <h1 id="titulo">Título Original</h1>
+    <p id="parrafo">Contenido del parrafo original</p>
+
+    <button onclick="modificarTexto()">
+        Cambiar texto
+    </button>
+    <button onclick="modificarEstilo()">
+        Cambiar estilo CSS
+    </button>
+    
+    <script>
+        function modificarTexto() {
+            document.getElementById("titulo").innerHTML =
+                "<strong>Título Cambiado</strong>";
+            document.getElementById("parrafo").innerHTML =
+                "Contenido del parrafo modificado con innerHTML";
+        }
+        function modificarEstilo() {
+            document.getElementById("parrafo").style.color = "red";
+            document.getElementById("parrafo").style.fontSize = "20px";
+            document.getElementById("parrafo").style.fontWeight = "20px";
+        }
+    </script>
+</body>
+</html>
