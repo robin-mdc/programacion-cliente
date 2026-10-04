@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA tnx</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema tnx">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <p>DWEC · <span class="tema-actual">Tema tnx</span> · 2º DAW</p>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema tnx</span></a>
+    </header>
+
+    <main>
+        <h1>actividad 800</h1>
+    </main>
+
+    <script>
+        // Detecta la carpeta TEMA_X de la URL y rellena el nombre del tema
+        function rellenarTema() {
+            var partes = location.pathname.split("/");
+            var carpeta = "";
+            for (var i = 0; i < partes.length; i++) {
+                if (/^TEMA_\d+$/i.test(partes[i])) {
+                    carpeta = partes[i];
+                }
+            }
+            if (carpeta === "") {
+                return;
+            }
+            var nombre = "Tema " + carpeta.split("_")[1];
+            var elementos = document.getElementsByClassName("tema-actual");
+            for (var j = 0; j < elementos.length; j++) {
+                elementos[j].textContent = nombre;
+            }
+            document.title = "DWEC " + nombre;
+        }
+        rellenarTema();
+    </script>
+</body>
+</html>
