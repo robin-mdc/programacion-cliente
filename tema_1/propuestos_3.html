@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <h1>Ejercicio 3</h1>
+
+    <p id="p1">1. JavaScript y Java son el mismo lenguaje.</p>
+    <button onclick="responder('p1', false)">Verdadero</button>
+    <button onclick="responder('p1', true)">Falso</button>
+
+    <p id="p2">2. Se puede declarar una variable con la palabra var.</p>
+    <button onclick="responder('p2', true)">Verdadero</button>
+    <button onclick="responder('p2', false)">Falso</button>
+
+    <p id="p3">3. document.getElementById() busca un elemento por su id.</p>
+    <button onclick="responder('p3', true)">Verdadero</button>
+    <button onclick="responder('p3', false)">Falso</button>
+
+    <p id="p4">4. console.log() escribe un mensaje en la consola del navegador.</p>
+    <button onclick="responder('p4', true)">Verdadero</button>
+    <button onclick="responder('p4', false)">Falso</button>
+
+    <p id="p5">5. La expresión "5" + 3 da como resultado 8.</p>
+    <button onclick="responder('p5', false)">Verdadero</button>
+    <button onclick="responder('p5', true)">Falso</button>
+
+    <p id="p6">6. Las funciones se declaran con la palabra function.</p>
+    <button onclick="responder('p6', true)">Verdadero</button>
+    <button onclick="responder('p6', false)">Falso</button>
+
+    <p id="p7">7. ¡Me encanta venir a clase!</p>
+    <button onclick="responder('p7', false)">Verdadero</button>
+    <button onclick="responder('p7', true)">Falso</button>
+
+    <script>
+        function responder(id, correcta) {
+            var frase = document.getElementById(id);
+            if (correcta) {
+                frase.style.color = "green";
+            } else {
+                frase.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

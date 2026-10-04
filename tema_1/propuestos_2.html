@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <h1>Ejercicio 2</h1>
+    <p>Haz clic sobre la imagen para pasar de foto</p>
+
+    <img id="imagen" src="../assets/img/gato1.png" width="300" onclick="siguienteFoto()">
+
+    <script>
+        var fotos = [
+            "../assets/img/gato1.png",
+            "../assets/img/gato2.png",
+            "../assets/img/perrito1.png",
+            "../assets/img/perrito2.png",
+        ];
+        var actual = 0;
+
+        function siguienteFoto() {
+            actual++;
+            if (actual == fotos.length) {
+                actual = 0;
+            }
+            document.getElementById("imagen").src = fotos[actual];
+        }
+    </script>
+</body>
+</html>

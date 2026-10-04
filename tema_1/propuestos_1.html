@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+
+    <script>
+
+        function sayHello() {
+            document.write("Hello world!")
+        }
+
+        function modificarTexto() {
+            document.getElementById("titulo").innerHTML =
+                "<strong>Modificando el contenido</strong>";
+        }
+
+    </script>
+
+</head>
+<body>
+    
+    <h1 id="titulo">Título Original</h1>
+    <br>
+    <button onclick="modificarTexto()">
+        Cambiar titulo
+    </button>
+
+</body>
+</html>

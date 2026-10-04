@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 1</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicio del tema 1">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <h1>Ejercicio 5</h1>
+
+    <button type="button" onclick="msgRuso()">Русский</button>
+    <button type="button" onclick="msgEspanol()">Español</button>
+    <button type="button" onclick="msgIngles()">English</button>
+
+    <p id="mensaje"></p>
+
+    <script>
+        function msgRuso() {
+            var x = document.getElementById("mensaje");
+            x.innerHTML = "Я не говорю по-русски.!";
+            x.style.color = "blue";
+        }
+        function msgEspanol() {
+            var x = document.getElementById("mensaje");
+            x.innerHTML = "¡Bienvenido!";
+            x.style.color = "red";
+        }
+        function msgIngles() {
+            var x = document.getElementById("mensaje");
+            x.innerHTML = "Welcome!";
+            x.style.color = "green";
+        }
+    </script>
+</body>
+</html>
