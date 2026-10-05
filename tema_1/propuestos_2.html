@@ -19,14 +19,29 @@
     <img id="imagen" src="../assets/img/gato1.png" width="300" onclick="siguienteFoto()">
 
     <script>
+        /**
+         * Relative paths of the images shown in rotation.
+         * @type {string[]}
+         */
         var fotos = [
             "../assets/img/gato1.png",
             "../assets/img/gato2.png",
             "../assets/img/perrito1.png",
             "../assets/img/perrito2.png",
         ];
+        /**
+         * Index in {@link fotos} of the image currently displayed.
+         * @type {number}
+         */
         var actual = 0;
 
+        /**
+         * Shows the next image of the {@link fotos} array in the <img id="imagen"> element.
+         * When the last image is reached, it goes back to the first one.
+         * Triggered by the onclick event of the image.
+         *
+         * @returns {void}
+         */
         function siguienteFoto() {
             actual++;
             if (actual == fotos.length) {

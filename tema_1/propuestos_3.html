@@ -44,6 +44,14 @@
     <button onclick="responder('p7', true)">Falso</button>
 
     <script>
+        /**
+         * Colors a question paragraph according to the answer the user chose:
+         * green if the answer is correct, red otherwise.
+         *
+         * @param {string} id - The id of the <p> element containing the statement.
+         * @param {boolean} correcta - true if the button pressed is the right answer, false if it is wrong.
+         * @returns {void}
+         */
         function responder(id, correcta) {
             var frase = document.getElementById(id);
             if (correcta) {

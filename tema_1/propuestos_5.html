@@ -22,16 +22,34 @@
     <p id="mensaje"></p>
 
     <script>
+        /**
+         * Shows a message in Russian, in blue, inside the <p id="mensaje"> element.
+         * Triggered by the onclick event of the "Русский" button.
+         *
+         * @returns {void}
+         */
         function msgRuso() {
             var x = document.getElementById("mensaje");
-            x.innerHTML = "Я не говорю по-русски.!";
+            x.innerHTML = "Я не говорю по-русски!";
             x.style.color = "blue";
         }
+        /**
+         * Shows a welcome message in Spanish, in red, inside the <p id="mensaje"> element.
+         * Triggered by the onclick event of the "Español" button.
+         *
+         * @returns {void}
+         */
         function msgEspanol() {
             var x = document.getElementById("mensaje");
             x.innerHTML = "¡Bienvenido!";
             x.style.color = "red";
         }
+        /**
+         * Shows a welcome message in English, in green, inside the <p id="mensaje"> element.
+         * Triggered by the onclick event of the "English" button.
+         *
+         * @returns {void}
+         */
         function msgIngles() {
             var x = document.getElementById("mensaje");
             x.innerHTML = "Welcome!";
