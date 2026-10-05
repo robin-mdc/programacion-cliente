@@ -10,10 +10,22 @@
 
     <script>
 
+        /**
+         * Writes the text "Hello world!" directly into the document.
+         * document.write() replaces the whole page content.
+         *
+         * @returns {void}
+         */
         function sayHello() {
             document.write("Hello world!")
         }
 
+        /**
+         * Replaces the content of the heading with id "titulo" by a bold text.
+         * Triggered by the onclick event of the "Cambiar titulo" button.
+         *
+         * @returns {void}
+         */
         function modificarTexto() {
             document.getElementById("titulo").innerHTML =
                 "<strong>Modificando el contenido</strong>";
