@@ -17,19 +17,27 @@
     <button onclick="modificarDOM()">3. Modificar DOM (innerHTML)</button>
     <button onclick="usarDocumentWrite()">4. Document Write</button>
     <script>
+        /**
+         * Shows an alert message. 
+         */
         function mostrarAlerta() {
             alert("Mostrando mensaje de alerta");
         }
-
+        /**
+         * Prints a message in the console 
+         */
         function mostrarEnConsola() {
             console.log("Hola soy un mensaje en la consola");
         }
-
+        /** modifies the content of the DOM element with the id "previo"
+         */ 
         function modificarDOM() {
             document.getElementById("previo").innerHTML =
                 "<strong>Contenido nuevo modificado con innerHTML</strong>";
         }
-
+        /**
+         * Overrides the whole document with a single message
+         */ 
         function usarDocumentWrite() {
             document.write("<h2>Texto escrito con document.write</h2>");
         }
