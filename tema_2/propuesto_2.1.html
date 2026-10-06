@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Actividad propuesta 2.1</h1>
+
+    <p>a=15, b=5</p>
+
+    <button onclick="resultados()">ejecutar operaciones (consola)</button>
+
+    <script>
+
+        var a = 15;
+        var b = 5;
+
+        function resta(a, b) {
+            return a - b;
+        }
+        function mult(a, b) {
+            return a * b;
+        }
+        function division(a, b) {
+            return a / b;
+        }
+
+        function resultados() {
+            console.log("resta:", resta(a, b))
+            console.log("multiplicacion:", mult(a, b))
+            console.log("division:", division(a, b))
+        }
+
+    </script>
+    
+</body>
+</html>
