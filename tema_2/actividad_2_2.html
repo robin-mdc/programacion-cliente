@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <main>
+        <h1>Actividad 2.2</h1>
+
+        <p>Pulsa para mostrar informacion de persona por consola</p>
+        <button onclick="mostrarPersona(persona)">
+            un boton
+        </button>
+    </main>
+    <script>
+
+        var persona = {
+            nombre: "Dimas",
+            edad: 28,
+            altura: 185
+        };
+
+        function mostrarPersona(p) {
+            console.log("El nombre es", p.nombre);
+            console.log("La edad es", p.edad);
+            console.log("La altura es", p.altura);
+        }
+
+    </script>
+    
+</body>
+</html>

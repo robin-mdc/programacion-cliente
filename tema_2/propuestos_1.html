@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 1</h1>
+
+    <button onclick="mostrar()">
+        mostrar resultado en consola
+    </button>
+
+    <script>
+
+        var r = 5;
+
+        function areaCirculo(r) {
+            return 2*(3.14**2)
+        }
+
+        function longitudCirculo(r) {
+            return 2*r*3.14;
+        }
+
+        function mostrar() {
+            console.log("area:", areaCirculo(r));
+            console.log("longitud:", longitudCirculo(r));
+        }
+
+    </script>
+
+</body>
+</html>
