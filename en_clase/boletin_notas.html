@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA ejercicios en clase</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema ejercicios en clase">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema ejercicios en clase</span></a>
+    </header>
+
+    <main style="background-color: gainsboro;">
+
+        <h1> Boletín de notas de la clase </h1>
+
+        <div style="background-color: white; padding: 16px;">
+            <h2>Notas por trimestre</h2>
+            <table id="tabla" border="1" cellpadding="8" style="border-collapse: collapse; text-align: center; padding: 10px; margin: 10px;" >
+
+                <tr>
+                    <th>Alumnos</th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>T3</th>
+                    <th>Media</th>
+                    <th>Calificación</th>
+                </tr>
+
+                <tr>
+                    <td>Ana</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td>Luis</td>
+                    <td>6</td>
+                    <td>5</td>
+                    <td>4</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+
+        <br>
+
+        <div style="background-color: white; padding: 16px;">
+
+            <h2>Añadir alumno</h2>
+
+            Nombre: <input id="nombre" type="text">
+            · T1 <input id="t1" type="number" style="width: 50px;">
+            · T2 <input id="t2" type="number" style="width: 50px;">
+            · T3 <input id="t3" type="number" style="width: 50px;">
+            · <button onclick="añadir()">Añadir</button><br>
+
+            <button onclick="reiniciar()">Volver a los datos iniciales</button>
+
+            <p id="info" style="font-weight: bold;">Info</p>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        const tabla = document.getElementById("tabla");
+        const info = document.getElementById("info");
+        const filasIniciales = tabla.rows.length;
+ 
+        function actualizar(fila) {
+            const c = fila.cells;
+            let suma = 0;
+            for (let i = 1; i < 4; i++) {
+
+                let nota = parseInt(c[i].textContent)
+                if (nota >= 5) {
+                    c[i].style.backgroundColor = "lightgreen";
+                } else {
+                    c[i].style.backgroundColor = "red";
+                }
+                suma += nota;
+
+            }
+            
+            const media = Math.round(suma / 3 * 10) / 10;
+            let cal;
+            if (media < 5) {
+                cal = "Suspenso";
+            } else if (media < 6) {
+                cal = "Suficiente";
+            } else if (media < 7) {
+                cal = "Bien";
+            } else if (media < 9) {
+                cal = "Notable";
+            } else {
+                cal = "Sobresaliente";
+            }
+ 
+            c[4].textContent = media;
+            c[5].textContent = cal;
+
+        }
+ 
+        function añadir() {
+            const nombre = document.getElementById("nombre").value;
+            const t1 = document.getElementById("t1").value;
+            const t2 = document.getElementById("t2").value;
+            const t3 = document.getElementById("t3").value;
+ 
+            if (nombre === "" || t1 === "" || t2 === "" || t3 === "") {
+                info.textContent = "Rellena todos los campos.";
+                return;
+            }
+ 
+            const fila = tabla.insertRow();
+            fila.innerHTML = "<td>" + nombre + "</td><td>" + t1 + "</td><td>" + t2 + "</td><td>" + t3 + "</td><td></td><td></td>";
+            actualizar(fila);
+ 
+            info.textContent = "Has añadido a " + nombre + ". Ahora hay " + (tabla.rows.length - 1) + " alumnos.";
+        }
+ 
+        function reiniciar() {
+            while (tabla.rows.length > filasIniciales) {
+                tabla.deleteRow(-1);
+            }
+            info.textContent = "";
+        }
+ 
+        // parsear alumnos que ya estaban en el html
+        for (let i = 1; i < tabla.rows.length; i++) {
+            actualizar(tabla.rows[i]);
+        }
+
+    </script>
+    
+</body>
+</html>

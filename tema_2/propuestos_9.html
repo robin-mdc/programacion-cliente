@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA tnx - Ejercicio 9</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema tnx</span></a>
+    </header>
+
+    <h1>Propuestos 9</h1>
+    <p>Si se puede crear. Un array puede mezclar tipos de datos y contener otros arrays</p>
+    <p id="pos"></p>
+
+    <h2>Contenido de lst</h2>
+    <ul id="lista"></ul>
+
+    <script>
+
+        var lst = ['panadero', 456, [0, 1, 2]];
+
+        document.getElementById("pos").innerHTML = "lst[2][2] = " + lst[2][2];
+
+        var salida = document.getElementById("lista");
+        for (var i = 0; i < lst.length; i++) {
+            if (Array.isArray(lst[i])) {
+                salida.innerHTML += "<li>Posición " + i + ": array con los valores " + lst[i].join(", ") + "</li>";
+            } else {
+                salida.innerHTML += "<li>Posición " + i + ": " + lst[i] + "</li>";
+            }
+        }
+
+    </script>
+</body>
+</html>

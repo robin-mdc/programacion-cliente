@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DWEC TEMA 2</title>
     <link rel="icon" href="../assets/icons/smiley.png">
-    <link rel="stylesheet" href="../style.css">
     <meta name="description" content="ejercicio del tema 2">
     <meta name="author" content="Robin Jack">
 </head>
@@ -16,16 +15,19 @@
 
     <h1>Propuestos 2</h1>
 
-    <button onclick="mostrar()">
-        mostrar resultado en consola
-    </button>
+    <label for="num">Introduce un numero:</label>
+    <input type="number" id="num">
+    <button onclick="comprobarEdad()">Comprobar</button>
+    <p id="resultado"></p>
+    <br>
+    <p>comprobacion: <code>var mensaje = (num % 2 == 0) ? "El numero es par" : "El numero es impar";</code></p>
 
     <script>
 
-        var num = 7;
-
-        function mostrar() {
-            console.log(num % 2 == 0 ? "par" : "impar");
+        function comprobarEdad() {
+            var num = parseInt(document.getElementById("num").value);
+            var mensaje = (num % 2 == 0) ? "El numero es par" : "El numero es impar";
+            document.getElementById("resultado").innerHTML = mensaje;
         }
 
     </script>

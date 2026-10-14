@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2 - Ejercicio 6</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 6</h1>
+
+    <h2>onmouseover</h2>
+    <p id="pr1" onmouseover="ratonEncima()">Pasa el ratón por encima del texto.</p>
+
+    <h2>onmouseout</h2>
+    <p id="pr2" onmouseout="ratonFuera()">Pasa el ratón por encima y sácalo de este texto.</p>
+
+    <h2>onblur</h2>
+    <label id="mensaje" for="campo">Escribe algo y haz clic fuera del campo:</label>
+    <input type="text" id="campo" onblur="campoPierdeFoco()">
+
+    <script>
+        function ratonEncima() {
+            document.getElementById("pr1").innerHTML = "El raton pasó por encima de este texto"
+            document.getElementById("pr1").style.color = "red";
+        }
+
+        function ratonFuera() {
+            document.getElementById("pr2").innerHTML = "<b> El ratón ha salido de este texto </b>";
+        }
+
+        function campoPierdeFoco() {
+            document.getElementById("mensaje").innerHTML = "El campo ha perdido el foco";
+        }
+    </script>
+</body>
+</html>

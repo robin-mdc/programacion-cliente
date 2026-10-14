@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2 - Ejercicio 8</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 8</h1>
+    <p id="fecha"></p>
+    <p id="mes"></p>
+    <p id="año"></p>
+
+    <script>
+
+        // los meses empiezan en 0
+        var fecha = new Date(2026, 2, 15);
+
+        document.getElementById("fecha").innerHTML = "Fecha: 15/03/2026";
+        document.getElementById("mes").innerHTML = "Mes: " + (fecha.getMonth() + 1);
+        document.getElementById("año").innerHTML = "Año: " + fecha.getFullYear();
+
+    </script>
+</body>
+</html>

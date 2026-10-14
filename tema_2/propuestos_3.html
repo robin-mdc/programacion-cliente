@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DWEC TEMA 2</title>
     <link rel="icon" href="../assets/icons/smiley.png">
-    <link rel="stylesheet" href="../style.css">
     <meta name="description" content="ejercicio del tema 2">
     <meta name="author" content="Robin Jack">
 </head>
@@ -14,19 +13,26 @@
         <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
     </header>
 
-    <h1>Propuestos 3</h1>
+    <main>
 
-    <button onclick="mostrar()">
-        mostrar resultado en consola
-    </button>
+        <h1>Propuestos 3</h1>
 
+        <h2><code>var dato = "Ronaldo " + 5 + 5;</code></h2>
+        <p id="res1"></p>
+        <p>Se evalúa de izquierda a derecha. Primero "Ronaldo " + 5 es una cadena ("Ronaldo 5") y a esa cadena se le concatena otro 5.</p>
+
+        <h2><code>var dato = 5 + 5 + " Ronaldo ";</code></h2>
+        <p id="res2"></p>
+        <p>Primero se evalúa 5 + 5, que como ambos son números da 10. Después, al sumar un número y una cadena, el 10 se convierte en texto y se concatena.</p>
+
+    </main>
     <script>
 
-        var num = 7;
+        var dato = "Ronaldo " + 5 + 5;
+        document.getElementById("res1").innerHTML = "dato = " + dato;
 
-        function mostrar() {
-            print("hola");
-        }
+        var dato = 5 + 5 + " Ronaldo ";
+        document.getElementById("res2").innerHTML = "dato = " + dato;
 
     </script>
 

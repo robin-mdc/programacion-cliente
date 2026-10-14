@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2 - Ejercicio 4</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 4</h1>
+
+    <p>Variables:<br>
+        <code>var texto = "Hola";<br>
+        var numero = 25;<br>
+        var decimal = 3.14;<br>
+        var booleano = true;<br>
+        var nulo = null;</code>
+    </p>
+        
+    <p>Tipos:</p>
+    <ul id="lista"></ul>
+
+    <script>
+        var texto = "Hola";
+        var numero = 25;
+        var decimal = 3.14;
+        var booleano = true;
+        var nulo = null;
+
+        var salida = document.getElementById("lista");
+        salida.innerHTML += "<li>typeof texto: " + typeof texto + "</li>";
+        salida.innerHTML += "<li>typeof numero: " + typeof numero + "</li>";
+        salida.innerHTML += "<li>typeof decimal: " + typeof decimal + "</li>";
+        salida.innerHTML += "<li>typeof booleano: " + typeof booleano + "</li>";
+        salida.innerHTML += "<li>typeof nulo: " + typeof nulo + "</li>";
+    </script>
+</body>
+</html>

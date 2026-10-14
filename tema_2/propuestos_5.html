@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2 - Ejercicio 5</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 5</h1>
+    <p id="variable"></p>
+    <p id="funcion"></p>
+
+    <script>
+
+        // se sobreescribe la primera declaracion
+        var nombre = "Ayoub";
+        var nombre = "Blas";
+        document.getElementById("variable").innerHTML = "Valor final de nombre: " + nombre;
+
+        function saludar() {
+            return "Hola desde la primera función";
+        }
+
+        function saludar() {
+            return "Hola desde la segunda función";
+        }
+
+        document.getElementById("funcion").innerHTML = "Resultado de saludar(): " + saludar();
+
+    </script>
+</body>
+</html>
