@@ -6,7 +6,7 @@
     <title>DWEC TEMA ejercicios en clase</title>
     <link rel="icon" href="../assets/icons/smiley.png">
     <link rel="stylesheet" href="../style.css">
-    <meta name="description" content="ejercicio del tema ejercicios en clase">
+    <meta name="description" content="Ejercicio del tema ejercicios en clase">
     <meta name="author" content="Robin Jack">
 </head>
 <body>
@@ -14,13 +14,14 @@
         <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema ejercicios en clase</span></a>
     </header>
 
-    <main style="background-color: gainsboro;">
+    <main style="background-color: whitesmoke;">
 
         <h1> Boletín de notas de la clase </h1>
 
         <div style="background-color: white; padding: 16px;">
             <h2>Notas por trimestre</h2>
-            <table id="tabla" border="1" cellpadding="8" style="border-collapse: collapse; text-align: center; padding: 10px; margin: 10px;" >
+            <!-- Tabla inicial -->
+            <table id="tabla" border="1" cellpadding="6" style="border-collapse: collapse; text-align: center; padding: 10px; margin: 10px;" >
 
                 <tr>
                     <th>Alumnos</th>
@@ -32,7 +33,7 @@
                 </tr>
 
                 <tr>
-                    <td>Ana</td>
+                    <td>Robin</td>
                     <td>7</td>
                     <td>8</td>
                     <td>9</td>
@@ -41,7 +42,7 @@
                 </tr>
 
                 <tr>
-                    <td>Luis</td>
+                    <td>Ayoub</td>
                     <td>6</td>
                     <td>5</td>
                     <td>4</td>
@@ -66,7 +67,30 @@
 
             <button onclick="reiniciar()">Volver a los datos iniciales</button>
 
-            <p id="info" style="font-weight: bold;">Info</p>
+            <p id="info" style="font-weight: bold;"></p>
+
+        </div>
+
+        <br>
+
+        <div style="background-color: white; padding: 16px;">
+
+            <h2>Consultas</h2>
+
+            <button onclick="contarAprobados()">Contar aprobados</button>
+            <button onclick="mejorNota()">Mejor nota de la clase</button>
+            <button onclick="mediaTrimestre()">Media de un trimestre</button>
+            <select id="trimestre">
+                <option value="1">1º trimestre</option>
+                <option value="2">2º trimestre</option>
+                <option value="3">3º trimestre</option>
+            </select><br>
+
+            <input id="buscar" type="text" placeholder="Nombre del alumno">
+            <button onclick="buscarAlumno()">Buscar alumno</button>
+
+            <h3>Resultado</h3>
+            <pre id="resultado"></pre>
 
         </div>
 
@@ -76,73 +100,210 @@
 
         const tabla = document.getElementById("tabla");
         const info = document.getElementById("info");
+        const resultado = document.getElementById("resultado");
         const filasIniciales = tabla.rows.length;
  
+        // ############# AÑADIR TABLA #############
         function actualizar(fila) {
-            const c = fila.cells;
+            let c = fila.cells;
             let suma = 0;
             for (let i = 1; i < 4; i++) {
-
                 let nota = parseInt(c[i].textContent)
                 if (nota >= 5) {
                     c[i].style.backgroundColor = "lightgreen";
                 } else {
-                    c[i].style.backgroundColor = "red";
+                    c[i].style.backgroundColor = "coral";
                 }
                 suma += nota;
 
             }
             
-            const media = Math.round(suma / 3 * 10) / 10;
-            let cal;
-            if (media < 5) {
-                cal = "Suspenso";
-            } else if (media < 6) {
-                cal = "Suficiente";
-            } else if (media < 7) {
-                cal = "Bien";
-            } else if (media < 9) {
-                cal = "Notable";
-            } else {
-                cal = "Sobresaliente";
-            }
- 
-            c[4].textContent = media;
-            c[5].textContent = cal;
+            let media = Math.round(suma / 3 * 10) / 10;
+            let cali = calificacion(media);
+            c[4].innerHTML = "<b>" + media + "</b>";
+            c[5].innerHTML = cali;
 
         }
  
+        // ############# AÑADIR ALUMNO #############
         function añadir() {
-            const nombre = document.getElementById("nombre").value;
-            const t1 = document.getElementById("t1").value;
-            const t2 = document.getElementById("t2").value;
-            const t3 = document.getElementById("t3").value;
+            let nombre = document.getElementById("nombre").value;
+            let t1 = document.getElementById("t1").value;
+            let t2 = document.getElementById("t2").value;
+            let t3 = document.getElementById("t3").value;
  
+            // validacion
             if (nombre === "" || t1 === "" || t2 === "" || t3 === "") {
-                info.textContent = "Rellena todos los campos.";
+                mostrarError("Rellena todos los campos.");
+                return;
+            }
+            if (t1 < 0 || t1 > 10 || t2 < 0 || t2 > 10 || t3 < 0 || t3 > 10) {
+                mostrarError("Las notas deben estar entre 0 y 10.");
                 return;
             }
  
-            const fila = tabla.insertRow();
+            let fila = tabla.insertRow();
             fila.innerHTML = "<td>" + nombre + "</td><td>" + t1 + "</td><td>" + t2 + "</td><td>" + t3 + "</td><td></td><td></td>";
             actualizar(fila);
  
-            info.textContent = "Has añadido a " + nombre + ". Ahora hay " + (tabla.rows.length - 1) + " alumnos.";
+            mostrarInfo("Has añadido a " + nombre + ". Ahora hay " + (tabla.rows.length - 1) + " alumnos.")
+        }
+
+        // ############# CONSULTAS #############
+        function contarAprobados() {
+            let alumnos = tabla.rows.length - 1;
+            let aprobados = 0;
+            for (let i = 1; i < alumnos+1; i++) {
+                let media = parseFloat(tabla.rows[i].cells[4].textContent);
+                if (media >= 5) {
+                    aprobados++;
+                }
+            }
+            mostrarResultado("Aprobados: " + aprobados + " de " + (alumnos) + 
+                            "\nSuspensos: " + (alumnos - aprobados) + " de " + (alumnos));
+        }
+
+        function mejorNota() {
+            let mejor = -1;
+            let nombre = "";
+            for (let i = 1; i < tabla.rows.length; i++) {
+                let media = parseFloat(tabla.rows[i].cells[4].textContent);
+                if (media > mejor) {
+                    mejor = media;
+                    nombre = tabla.rows[i].cells[0].textContent;
+                }
+            }
+            mostrarResultado("Mejor media: " + mejor + " (" + nombre + ")");
+        }
+
+        function mediaTrimestre() {
+            let t = document.getElementById("trimestre").value;
+            let suma = 0;
+            for (let i = 1; i < tabla.rows.length; i++) {
+                suma += parseInt(tabla.rows[i].cells[t].textContent);
+            }
+            let media = suma / (tabla.rows.length - 1);
+            mostrarResultado("Media del trimestre " + t + ": " + media.toFixed(2));
+        }
+
+        function buscarAlumno() {
+            let buscado = document.getElementById("buscar").value.trim();
+            if (buscado === "") {
+                mostrarResultado("Escribe un nombre.");
+                return;
+            }
+
+            for (let i = 1; i < tabla.rows.length; i++) {
+                let c = tabla.rows[i].cells;
+                if (c[0].textContent.toLowerCase() === buscado.toLowerCase()) {
+                    let suma = 0;
+                    let notas = [];
+                    for (let j = 1; j < 4; j++) {
+                        notas.push(c[j].textContent);
+                        suma += parseInt(c[j].textContent);
+                    }
+                    let media = suma / 3;
+                    mostrarResultado(
+                        c[0].textContent + " está en la posición " + i + "\n" +
+                        "Notas: " + notas.join(", ") + "\n" +
+                        "Media: " + media.toFixed(2) + " (" + calificacion(media) + ")"
+                    );
+                    return;
+                }
+            }
+
+            mostrarResultado("No se ha encontrado a " + buscado);
+        }
+
+        // ############# OTRAS FUNCIONES #############
+        function calificacion(media) {
+            if (media < 5) {
+                return "Suspenso";
+            } else if (media < 6) {
+                return "Suficiente";
+            } else if (media < 7) {
+                return "Bien";
+            } else if (media < 9) {
+                return "Notable";
+            } else {
+                return "Sobresaliente";
+            }
+        }
+
+        function mostrarInfo(mensaje) {
+            info.innerHTML = "<code>" + mensaje + "</code>";
+            info.style.color = "black";
+        }
+
+        function mostrarError(mensaje) {
+            info.innerHTML = "<code>" + mensaje + "</code>";
+            info.style.color = "red";
+        }
+
+        function mostrarResultado(mensaje) {
+            resultado.textContent = mensaje;
         }
  
         function reiniciar() {
+            // borro datos hasta quedarme con el estado inicial
             while (tabla.rows.length > filasIniciales) {
                 tabla.deleteRow(-1);
             }
             info.textContent = "";
+            resultado.textContent = "";
         }
  
-        // parsear alumnos que ya estaban en el html
+        // Parsear alumnos
         for (let i = 1; i < tabla.rows.length; i++) {
             actualizar(tabla.rows[i]);
         }
 
     </script>
-    
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        main div {
+            border: 1px solid silver;
+            border-radius: 8px;
+        }
+
+        th {
+            background-color: gainsboro;
+            color: black;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        td {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        button {
+            color: white;
+            background-color: RoyalBlue;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        input, select {
+            padding: 6px;
+            border: 1px solid LightSlateGray;
+            border-radius: 6px;
+        }
+
+        pre {
+            background-color: DarkSlateGray;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+        }
+    </style>
+
 </body>
 </html>

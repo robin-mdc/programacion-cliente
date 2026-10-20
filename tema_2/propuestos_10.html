@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 2 - Ejercicio 9</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <meta name="description" content="ejercicios del tema 2">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 2</span></a>
+    </header>
+
+    <h1>Propuestos 10</h1>
+
+    <h3>Rombo hueco configurable</h3>
+
+
+    Altura del rombo: <input id="altura" type="number" style="width: 50px;"> <button onclick="generarRombo()"> Generar </button>
+
+    <pre id="rombo"></pre>
+
+    <script>
+
+        let p = document.getElementById("rombo");
+
+        function generarRombo() {
+
+            let h = Number(document.getElementById("altura").value);
+            if (h % 2 == 0) {
+                h += 1; // si es par le sumo 1
+            }
+
+            let cadena = ""
+            let mitad = (h-1) / 2;
+            for (let i = 0; i < h; i++) {
+                for (let j = 0; j < h; j++) {
+                    if (i < mitad+1) {
+                        if (mitad - i == j || mitad + i == j) {
+                            cadena += "*";
+                        } else {
+                            cadena += " ";
+                        }
+                    } else {
+                        // ??? -> i - (h-1)/2
+                        if (mitad - (h-1-i) == j || mitad + (h-1-i) == j) {
+                            cadena += "*";
+                        } else {
+                            cadena += " ";
+                        }
+                    }
+                }
+                cadena += "\n"
+            }
+
+            console.log(cadena);
+            p.textContent = cadena;
+
+        }
+
+    </script>
+</body>
+</html>
