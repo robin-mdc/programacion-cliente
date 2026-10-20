@@ -15,15 +15,15 @@
 
     <h1>Propuestos 6</h1>
 
-    <h2>onmouseover</h2>
+    <h3>onmouseover</h3>
     <p id="pr1" onmouseover="ratonEncima()">Pasa el ratón por encima del texto.</p>
 
-    <h2>onmouseout</h2>
+    <h3>onmouseout</h3>
     <p id="pr2" onmouseout="ratonFuera()">Pasa el ratón por encima y sácalo de este texto.</p>
 
-    <h2>onblur</h2>
+    <h3>onblur</h3>
     <label id="mensaje" for="campo">Escribe algo y haz clic fuera del campo:</label>
-    <input type="text" id="campo" onblur="campoPierdeFoco()">
+    <input type="text" id="campo" onblur="pierdeFoco()">
 
     <script>
         function ratonEncima() {
@@ -35,7 +35,7 @@
             document.getElementById("pr2").innerHTML = "<b> El ratón ha salido de este texto </b>";
         }
 
-        function campoPierdeFoco() {
+        function pierdeFoco() {
             document.getElementById("mensaje").innerHTML = "El campo ha perdido el foco";
         }
     </script>
