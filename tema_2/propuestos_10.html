@@ -37,19 +37,12 @@
             let mitad = (h-1) / 2;
             for (let i = 0; i < h; i++) {
                 for (let j = 0; j < h; j++) {
-                    if (i < mitad+1) {
-                        if (mitad - i == j || mitad + i == j) {
-                            cadena += "*";
-                        } else {
-                            cadena += " ";
-                        }
+                    if (mitad - i == j || mitad + i == j) {
+                        cadena += "*";
+                    } else if (mitad - (h-1-i) == j || mitad + (h-1-i) == j) {
+                        cadena += "*";
                     } else {
-                        // ??? -> i - (h-1)/2
-                        if (mitad - (h-1-i) == j || mitad + (h-1-i) == j) {
-                            cadena += "*";
-                        } else {
-                            cadena += " ";
-                        }
+                        cadena += " ";
                     }
                 }
                 cadena += "\n"
