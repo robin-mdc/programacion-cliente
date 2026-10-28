@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 3</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema 3">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 3</span></a>
+    </header>
+
+    <main>
+        <h3>Practica con el almacenamiento</h3>
+        <h1>Lista de tareas</h1>
+
+        <input type="text" id="texto">
+        <button onclick="añadirTarea(texto.value)">añadir</button>
+        <ul id="lista"></ul>
+    </main>
+
+    <script>
+
+        function añadirTarea(texto) {
+            const tareas = JSON.parse(localStorage.getItem("tareas")) || []
+            tareas.push(texto)
+            localStorage.setItem("tareas", JSON.stringify(tareas))
+            verTareas()
+        }
+
+        function verTareas() {
+            const tareas = JSON.parse(localStorage.getItem("tareas")) || []
+            let html = ""
+            for (let i = 0; i < tareas.length; i++) {
+                html += "<li>" + tareas[i] + "</li>"
+            }
+            document.getElementById("lista").innerHTML = html
+        }
+
+        verTareas()
+
+    </script>
+</body>
+</html>

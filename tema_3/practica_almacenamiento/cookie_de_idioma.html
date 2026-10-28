@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 3</title>
+    <link rel="icon" href="../../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../../style.css">
+    <meta name="description" content="ejercicio del tema 3">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 3</span></a>
+    </header>
+
+    <main>
+
+        <h3>Practica con el almacenamiento</h3>
+        <h1>Cookie de idioma</h1>
+
+        <button onclick="crear()">crear</button>
+        <button onclick="leer()">leer</button>
+        <button onclick="borrar()">borrar</button>
+
+    </main>
+
+    <script>
+        
+        const age_semana = 3600*24*7
+
+        function crear() {
+            document.cookie = "idioma=es; max-age=" + age_semana + "; path=/";
+            console.log("Cookie creada: " + document.cookie)
+        }
+
+        function leer() {
+            let valor = leerCookie("idioma")
+            console.log("Valor de la cookie: " + valor)
+        }
+
+        function borrar() {
+            document.cookie = "idioma=; max-age=0; path=/";
+            console.log("Cookie borrada: " + document.cookie)
+        }
+
+        function leerCookie(nombre) {
+            const pares = document.cookie.split("; ");
+            for (let i = 0; i < pares.length; i++) {
+                const partes = pares[i].split("=");
+                if (partes[0] === nombre) return decodeURIComponent(partes[1]);
+            }
+            return null;
+        }
+
+
+    </script>
+    
+</body>
+</html>

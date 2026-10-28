@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA 3</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema 3">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema 3</span></a>
+    </header>
+
+    <main>
+        <h3>Practica con el almacenamiento</h3>
+        <h1>Tema que se recuerda</h1>
+
+        <button onclick="cambiarTema()">cambiar tema</button>
+        <p>Tema actual: <span id="tema"></span></p>
+    </main>
+
+    <script>
+
+        function cambiarTema() {
+            let tema = localStorage.getItem("tema")
+            if (tema === "oscuro") {
+                tema = "claro"
+            } else {
+                tema = "oscuro"
+            }
+            localStorage.setItem("tema", tema)
+            mostrar()
+        }
+
+        function mostrar() {
+            const tema = localStorage.getItem("tema") || "claro"
+            document.getElementById("tema").textContent = tema
+
+            if (tema === "oscuro") {
+                document.body.style.backgroundColor = "black"
+                document.body.style.color = "white"
+            } else {
+                document.body.style.backgroundColor = "white"
+                document.body.style.color = "black"
+            }
+        }
+
+        mostrar()
+
+    </script>
+</body>
+</html>
