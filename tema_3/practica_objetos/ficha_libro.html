@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA tnx</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema tnx">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema tnx</span></a>
+    </header>
+    <main>
+
+        
+
+    </main>
+
+    <script>
+        class Libro {
+            constructor(titulo, autor, paginas) {
+                this.titulo = titulo;
+                this.autor = autor;
+                this.paginas = paginas;
+            }
+            resumen () { return `${this.titulo}, de ${this.autor} (${this.paginas} páginas)`}
+        }
+
+        const bla = new Libro("Las aventuras de Ayoub", "Adrián Blas", 7500);
+        for (const clave in bla) {
+            console.log(clave, bla[clave])
+        }
+        console.log(bla.resumen());
+
+    </script>
+</body>
+</html>

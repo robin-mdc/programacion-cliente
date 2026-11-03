@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DWEC TEMA tnx</title>
+    <link rel="icon" href="../assets/icons/smiley.png">
+    <link rel="stylesheet" href="../style.css">
+    <meta name="description" content="ejercicio del tema tnx">
+    <meta name="author" content="Robin Jack">
+</head>
+<body>
+    <header>
+        <a class="back" href="index.html">← Volver al <span class="tema-actual">Tema tnx</span></a>
+    </header>
+    <main>
+
+        <h1>Clase producto</h1>
+
+    </main>
+
+    <script>
+        class Producto {
+            constructor(nombre, precio, stock) {
+                this.nombre = nombre;
+                this.precio = precio;
+                this.stock = stock;
+            }
+            conIVA() { return this.precio * 1.21 }
+            vender(n) {
+                if (n <= this.stock) {
+                    this.stock -= n;
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        const teclado = new Producto("Teclado", 50, 10);
+        console.log(teclado.conIVA());
+        console.log(teclado.vender(3), teclado.stock);
+        console.log(teclado.vender(20), teclado.stock);
+
+    </script>
+</body>
+</html>
