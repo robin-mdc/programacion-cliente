@@ -2,9 +2,9 @@
  
 Actividades y ejercicios del módulo **Desarrollo Web en Entorno Cliente**, 2º curso del grado superior de Desarrollo de Aplicaciones Web (DAW).
  
-## 🔗 Ver la web
+## Ver GitGub Pages
  
-👉 **https://robin-mdc.github.io/programacion-cliente/**
+➡️ **https://robin-mdc.github.io/programacion-cliente/**
  
 ## Estructura
  
@@ -18,4 +18,4 @@ Cada tema tiene su propia carpeta con sus actividades:
 └── ...
 ```
  
-Para ver las actividades, entra en la web y selecciona el tema correspondiente.
+Para ver las actividades, entra en el github pages y selecciona el tema correspondiente.
