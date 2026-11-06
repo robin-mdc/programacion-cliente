@@ -46,7 +46,7 @@ class Incidencia {
   // RETO 5: es urgente
   esUrgente() {
     if (!this.resuelta && this.prioridad === "alta" && this.minutos() > 30) return true;
-    else false;
+    else return false;
   }
 
 }
