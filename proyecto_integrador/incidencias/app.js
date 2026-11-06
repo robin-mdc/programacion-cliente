@@ -15,6 +15,7 @@ class Incidencia {
   // Devuelve el HTML de la tarjeta de esta incidencia
   html() {
     let clases = "incidencia " + this.prioridad;
+    if (this.esUrgente()) clases += " urgente";
     if (this.resuelta) clases += " resuelta";
     const hora = new Date(this.fecha).toLocaleTimeString("es-ES");
 
@@ -23,21 +24,32 @@ class Incidencia {
     html += "<p>" + this.descripcion + "</p>";
     html += "<p class='meta'>" + this.autor + " · " + hora + "</p>";
     // TODO RETO 3: añade "hace X min" con this.minutos()
-    html += "<p>Hace " + this.minutos() + " minutos</p>"
+    html += "<p>Hace " + this.minutos() + " minutos</p>";
+
     // TODO RETO 1: si NO está resuelta, añade el botón:
-    //   "<button type='button' onclick='resolver(" + this.id + ")'>Resolver</button>"
-    if (!this.resuelto) {
-      html += "<button type='button' onclick='resolver(" + this.id + ")'>Resolver</button>"
+    if (!this.resuelta) {
+      html += "<button type='button' onclick='resolver(" + this.id + ")'>Resolver</button>";
     }
+
+    // RETO 4: Eliminar
+    html += "<button type='button' class='borrar' onclick='eliminar(" + this.id + ")'>Eliminar</button>";
+
     html += "</article>";
     return html;
   }
 
   // TODO RETO 3: devuelve los minutos que han pasado desde this.fecha
-  //   (resta Date.now() - this.fecha y divide entre 60000; redondea con Math.floor)
   minutos() {
     return Math.floor((Date.now() - this.fecha) / 60000);
   }
+
+  // RETO 5: es urgente
+  esUrgente() {
+    if (!this.resuelta && this.prioridad == "alta" && this.minutos() > 30) {
+      return true;
+    }
+  }
+
 }
 
 // =====================================================================
@@ -70,15 +82,24 @@ function cargar() {
 // =====================================================================
 function pintar() {
   let html = "";
+  let urgentes = 0;
   for (let i = 0; i < incidencias.length; i++) {
     html += incidencias[i].html();
+    if (incidencias[i].esUrgente()) urgentes++;
   }
   if (html === "") html = "<p>No hay incidencias.</p>";
   document.getElementById("lista").innerHTML = html;
 
   document.getElementById("resumen").textContent = "Total: " + incidencias.length;
   // TODO RETO 2: cuenta las que NO están resueltas y muéstralo así:
-  //   "Total: 4 · Pendientes: 3"
+  let pendientes = 0;
+  for (let i = 0; i < incidencias.length; i++) {
+    if (!incidencias[i].resuelta) pendientes++;
+  }
+  document.getElementById("resumen").textContent += " · Pendientes: " + pendientes;
+
+  // RETO 5
+  if (urgentes >= 1) document.title = "(" + urgentes + ") " + document.title;
 }
 
 // Muestra un mensaje que desaparece a los 2 segundos (3.2)
@@ -117,6 +138,28 @@ document.getElementById("enviar").addEventListener("click", () => {
 // TODO RETO 1: busca con un for la incidencia cuyo id coincide,
 //   ponle resuelta = true, y después guardar() y pintar()
 function resolver(id) {
+
+  for (let i = 0; i < incidencias.length; i++) {
+    if (incidencias[i].id === id) incidencias[i].resuelta = true;
+  }
+  guardar();
+  pintar();
+
+}
+
+// RETO 4: eliminar
+function eliminar(id) {
+  if (confirm("¿Estás seguro de que quieres eliminar esta incidencia?")) {
+        ejecutarEliminar(id);
+    }
+}
+
+function ejecutarEliminar(id) {
+
+  incidencias = incidencias.filter(i => i.id !== id);
+  guardar();
+  pintar();
+
 }
 
 // =====================================================================
@@ -141,6 +184,8 @@ if (autorGuardado !== null) {
 setInterval(() => {
   document.getElementById("reloj").textContent = new Date().toLocaleTimeString("es-ES");
 }, 1000);
+setInterval(pintar, 60000)
+
 
 cargar();
 pintar();
