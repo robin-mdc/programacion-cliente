@@ -20,7 +20,7 @@ MARCA_MANUAL = "<!-- manual -->"
 # Carpetas extras a mostrar además de tema_X:
 # "carpeta": ("Título tarjeta", "Descripción")
 EXTRAS = {
-    "en_clase": ("Ejercicios en Clase", "Actividades realizadas en clase con Yil :)"),
+    "en_clase": ("Ejercicios en Clase", "Actividades realizadas con Yil en clase :^)"),
 }
 
 # Descripción de cada carpeta (ruta relativa a la raíz, con /)
@@ -146,23 +146,25 @@ def pagina_carpeta(carpeta):
         (f for f in carpeta.glob("*.html") if f.name != "index.html"),
         key=lambda f: natural(f.name),
     )
-    grupos = {}  # prefijo -> [(etiqueta, href)]
+    grupos = {}  # prefijo -> [(etiqueta, href, clase)]
     for f in archivos:
         m = re.fullmatch(r"(.+)_(\d+)", f.stem)
         if m:
             prefijo, etiqueta = m.group(1), f"Actividad {int(m.group(2))}"
         else:
             prefijo, etiqueta = "otros", f.stem.replace("_", " ")
-        grupos.setdefault(prefijo, []).append((etiqueta, f.name))
+        grupos.setdefault(prefijo, []).append((etiqueta, f.name, "archivo"))
 
     subs = subcarpetas(carpeta)
     if subs:
-        grupos["carpetas"] = [(d.name.replace("_", " "), f"{d.name}/index.html") for d in subs]
+        grupos["carpetas"] = [(d.name.replace("_", " "), f"{d.name}/index.html", "carpeta") for d in subs]
 
     bloques = []
     for prefijo, items in grupos.items():
         titulo = GRUPOS.get(f"{ruta(carpeta)}/{prefijo}") or GRUPOS.get(prefijo) or bonito(prefijo)
-        lis = "\n".join(f'      <li><a href="{esc(h)}">{esc(e)}</a></li>' for e, h in items)
+        lis = "\n".join(
+            f'      <li><a class="{c}" href="{esc(h)}">{esc(e)}</a></li>' for e, h, c in items
+        )
         bloques.append(f'    <h3>{esc(titulo)}</h3>\n    <ul class="list">\n{lis}\n    </ul>')
 
     nombre = nombre_carpeta(carpeta)
