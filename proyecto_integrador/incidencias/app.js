@@ -45,9 +45,8 @@ class Incidencia {
 
   // RETO 5: es urgente
   esUrgente() {
-    if (!this.resuelta && this.prioridad == "alta" && this.minutos() > 30) {
-      return true;
-    }
+    if (!this.resuelta && this.prioridad === "alta" && this.minutos() > 30) return true;
+    else false;
   }
 
 }
@@ -99,7 +98,11 @@ function pintar() {
   document.getElementById("resumen").textContent += " · Pendientes: " + pendientes;
 
   // RETO 5
-  if (urgentes >= 1) document.title = "(" + urgentes + ") " + document.title;
+  if (urgentes > 0) {
+    document.title = "(" + urgentes + ") Incidencias del aula";
+  } else {
+    document.title = "Incidencias del aula";
+  }
 }
 
 // Muestra un mensaje que desaparece a los 2 segundos (3.2)
@@ -156,7 +159,7 @@ function eliminar(id) {
 
 function ejecutarEliminar(id) {
 
-  incidencias = incidencias.filter(i => i.id !== id);
+  incidencias = incidencias.filter(inc => inc.id !== id);
   guardar();
   pintar();
 
@@ -184,8 +187,7 @@ if (autorGuardado !== null) {
 setInterval(() => {
   document.getElementById("reloj").textContent = new Date().toLocaleTimeString("es-ES");
 }, 1000);
-setInterval(pintar, 60000)
-
+setInterval(pintar, 60000);
 
 cargar();
 pintar();
