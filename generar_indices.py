@@ -1,11 +1,16 @@
 # Robin Jack (2026)
 
-"""Genera los index.html (raíz, temas y subcarpetas) y corrige el <head> de cada ejercicio.
+"""Genera el index.html de cada carpeta con ejercicios y ajusta lo justo de cada ejercicio.
 
 Se ejecuta solo en GitHub Actions en cada push (.github/workflows/pages.yml),
 pero también se puede ejecutar a mano para verlo en local: python generar_indices.py
 
-Si un index.html contiene <!-- manual --> no se sobrescribe.
+- Los índices generados llevan la marca <!-- generado -->. Un index.html sin ella se
+  considera hecho a mano (un proyecto): no se toca, no se entra en su carpeta y solo se enlaza.
+- De cada ejercicio solo se modifican, si existen: <title>, la description, las rutas
+  del icono y de style.css, y el enlace de vuelta (<a class="back">).
+- En los índices cada ejercicio se lista con el texto de su primer encabezado (h1..h6)
+  y, debajo, el nombre del archivo.
 """
 import html
 import re
@@ -15,238 +20,213 @@ RAIZ = Path(__file__).parent
 AUTOR = "Robin Jack"
 ICONO = "assets/icons/smiley.png"
 ESTILO = "style.css"
-MARCA_MANUAL = "<!-- manual -->"
+MARCA = "<!-- generado -->"
+REPO = "https://github.com/robin-mdc/programacion-cliente"
 
-# Carpetas extras a mostrar además de tema_X:
-# "carpeta": ("Título tarjeta", "Descripción")
-EXTRAS = {
-    "en_clase": ("Ejercicios en Clase", "Actividades realizadas con Yil en clase :^)"),
+# Carpetas o archivos que no se muestran ni se modifican.
+# Por nombre (en cualquier nivel) o por ruta relativa a la raíz: "tema_2/borrador.html"
+IGNORAR = {"assets", "plantilla.html"}
+
+# Opcionales, por ruta relativa a la raíz. Sin título se usa el nombre de la carpeta.
+TITULOS = {
+    "en_clase": "Ejercicios en clase",
 }
-
-# Descripción de cada carpeta (ruta relativa a la raíz, con /)
 DESCRIPCIONES = {
     "tema_1": "Sintaxis del lenguaje JavaScript",
-    "tema_2": "Tema 2",
-    "tema_3": "Tema 3",
+    "en_clase": "Actividades realizadas con Yil en clase :^)",
 }
 
-# Título de cada grupo de ejercicios según el prefijo del archivo.
-# Se busca primero "carpeta/prefijo" y luego "prefijo".
-GRUPOS = {
-    "tema_1/propuestos": "Ejercicios propuestos Pagina 35",
-    "propuestos": "Ejercicios propuestos",
-    "actividad": "Actividades",
-    "otros": "Ejercicios",
-}
 
-# Carpetas que nunca se recorren
-IGNORAR = {"assets"}
-
-
-def natural(texto):
-    # para orden natural 1-10
-    return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", str(texto))]
+def natural(p):
+    # orden natural: propuestos_2 antes que propuestos_10
+    return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", p.name.lower())]
 
 
 def esc(texto):
     return html.escape(str(texto))
 
 
-def bonito(nombre):
-    return nombre.replace("_", " ").capitalize()
+def ruta(p):
+    return p.relative_to(RAIZ).as_posix()
 
 
-def ruta(carpeta):
-    return carpeta.relative_to(RAIZ).as_posix()
+def titulo(p):
+    # "tema_3" -> "Tema 3", "lista_de_tareas.html" -> "Lista de tareas"
+    return TITULOS.get(ruta(p)) or p.stem.replace("_", " ").capitalize()
 
 
-def prefijo_raiz(carpeta):
-    # "../" tantas veces como niveles hay hasta la raíz
+def nombre(carpeta):
+    # "Tema 3 · Practica almacenamiento"
+    partes = carpeta.relative_to(RAIZ).parts
+    return " · ".join(titulo(RAIZ.joinpath(*partes[:i + 1])) for i in range(len(partes)))
+
+
+def a_raiz(carpeta):
     return "../" * len(carpeta.relative_to(RAIZ).parts)
 
 
-def numero_tema(carpeta):
-    m = re.fullmatch(r"tema_(\d+)", carpeta.relative_to(RAIZ).parts[0])
-    return int(m.group(1)) if m else None
-
-
-def subcarpetas(carpeta):
-    return sorted(
-        (d for d in carpeta.iterdir()
-         if d.is_dir() and d.name not in IGNORAR and not d.name.startswith((".", "_"))),
+def contenido(carpeta):
+    """Subcarpetas y ejercicios de una carpeta, sin lo ignorado."""
+    visibles = sorted(
+        (p for p in carpeta.iterdir()
+         if not p.name.startswith((".", "_")) and p.name not in IGNORAR and ruta(p) not in IGNORAR),
         key=natural,
     )
+    carpetas = [p for p in visibles if p.is_dir()]
+    ejercicios = [p for p in visibles if p.suffix == ".html" and p.name != "index.html"]
+    return carpetas, ejercicios
 
 
-def carpetas_principales():
-    temas = [d for d in subcarpetas(RAIZ) if re.fullmatch(r"tema_\d+", d.name)]
-    extras = [RAIZ / c for c in EXTRAS if (RAIZ / c).is_dir()]
-    return temas + extras
+def leer(archivo):
+    return archivo.read_bytes().decode("utf-8")
 
 
-def head(titulo, pre, descripcion):
-    return f"""<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{esc(titulo)}</title>
-  <link rel="icon" href="{pre}{ICONO}">
-  <link rel="stylesheet" href="{pre}{ESTILO}">
-  <meta name="description" content="{esc(descripcion)}">
-  <meta name="author" content="{AUTOR}">
-</head>"""
-
-
-def pagina_raiz():
-    tarjetas = []
-    for d in carpetas_principales():
-        n = numero_tema(d)
-        if n is not None:
-            tarjetas.append((f"{n:02d}", f"Tema {n}", DESCRIPCIONES.get(d.name, ""), d.name))
-        else:
-            titulo, desc = EXTRAS[d.name]
-            tarjetas.append(("★", titulo, desc, d.name))
-
-    cards = "\n".join(
-        f"""    <a class="card" href="{esc(c)}/index.html">
-      <span class="num">{esc(num)}</span>
-      <h2>{esc(tit)}</h2>
-      <p>{esc(desc)}</p>
-    </a>"""
-        for num, tit, desc, c in tarjetas
-    )
-    return f"""<!DOCTYPE html>
-<html lang="es">
-{head("DWEC · Desarrollo Web en Entorno Cliente", "", "Ejercicios de DWEC")}
-<body>
-  <header>
-    <h1>Desarrollo Web en Entorno Cliente</h1>
-    <p>2º DAW · Robin Jack Schilmöller</p>
-  </header>
-
-  <main class="grid">
-{cards}
-  </main>
-
-  <footer>Curso 2026/27</footer>
-</body>
-</html>
-"""
-
-
-def nombre_carpeta(carpeta):
-    # "Tema 3 · Practica almacenamiento"
-    partes = carpeta.relative_to(RAIZ).parts
-    n = numero_tema(carpeta)
-    primero = f"Tema {n}" if n is not None else EXTRAS.get(partes[0], (bonito(partes[0]),))[0]
-    return " · ".join([primero] + [bonito(p) for p in partes[1:]])
-
-
-def pagina_carpeta(carpeta):
-    archivos = sorted(
-        (f for f in carpeta.glob("*.html") if f.name != "index.html"),
-        key=lambda f: natural(f.name),
-    )
-    grupos = {}  # prefijo -> [(etiqueta, href, clase)]
-    for f in archivos:
-        m = re.fullmatch(r"(.+)_(\d+)", f.stem)
-        if m:
-            prefijo, etiqueta = m.group(1), f"Actividad {int(m.group(2))}"
-        else:
-            prefijo, etiqueta = "otros", f.stem.replace("_", " ")
-        grupos.setdefault(prefijo, []).append((etiqueta, f.name, "archivo"))
-
-    subs = subcarpetas(carpeta)
-    if subs:
-        grupos["carpetas"] = [(d.name.replace("_", " "), f"{d.name}/index.html", "carpeta") for d in subs]
-
-    bloques = []
-    for prefijo, items in grupos.items():
-        titulo = GRUPOS.get(f"{ruta(carpeta)}/{prefijo}") or GRUPOS.get(prefijo) or bonito(prefijo)
-        lis = "\n".join(
-            f'      <li><a class="{c}" href="{esc(h)}">{esc(e)}</a></li>' for e, h, c in items
-        )
-        bloques.append(f'    <h3>{esc(titulo)}</h3>\n    <ul class="list">\n{lis}\n    </ul>')
-
-    nombre = nombre_carpeta(carpeta)
-    desc = DESCRIPCIONES.get(ruta(carpeta), "")
-    return f"""<!DOCTYPE html>
-<html lang="es">
-{head(f"{nombre} · DWEC", prefijo_raiz(carpeta), desc or nombre)}
-<body>
-  <header>
-    <a class="back" href="../index.html">← Volver</a>
-    <h1>{esc(nombre)}</h1>
-    <p>{esc(desc)}</p>
-  </header>
-
-  <main>
-{chr(10).join(bloques)}
-  </main>
-</body>
-</html>
-"""
-
-
-def arreglar_head(archivo):
-    """Corrige rutas de icono/estilo según la profundidad y añade las etiquetas que falten."""
-    texto = archivo.read_text(encoding="utf-8")
-    m = re.search(r"<head>(.*?)</head>", texto, re.S | re.I)
-    if not m:
+def escribir(archivo, texto):
+    """Escribe solo si cambia. Devuelve True si ha escrito."""
+    if archivo.exists() and leer(archivo).replace("\r\n", "\n") == texto.replace("\r\n", "\n"):
         return False
-    original = cabeza = m.group(1)
-    pre = prefijo_raiz(archivo.parent)
-
-    cabeza = re.sub(r'(<link[^>]*rel="icon"[^>]*href=")[^"]*(")', rf"\g<1>{pre}{ICONO}\g<2>", cabeza)
-    cabeza = re.sub(r'(<link[^>]*href=")[^"]*style\.css(")', rf"\g<1>{pre}{ESTILO}\g<2>", cabeza)
-
-    # placeholder "tnx" de plantilla.html -> número de tema
-    n = numero_tema(archivo.parent)
-    if n is not None:
-        cabeza = re.sub(r"(<title>.*?)tnx", rf"\g<1>{n}", cabeza)
-        cabeza = re.sub(r'(<meta name="description"[^>]*?)tnx', rf"\g<1>{n}", cabeza)
-
-    faltan = []
-    if "charset" not in cabeza:
-        faltan.append('<meta charset="UTF-8">')
-    if 'name="viewport"' not in cabeza:
-        faltan.append('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
-    if 'rel="icon"' not in cabeza:
-        faltan.append(f'<link rel="icon" href="{pre}{ICONO}">')
-    if "style.css" not in cabeza:
-        faltan.append(f'<link rel="stylesheet" href="{pre}{ESTILO}">')
-    if 'name="author"' not in cabeza:
-        faltan.append(f'<meta name="author" content="{AUTOR}">')
-    if faltan:
-        cabeza = cabeza.rstrip() + "".join(f"\n    {t}" for t in faltan) + "\n"
-
-    if cabeza == original:
-        return False
-    archivo.write_text(texto[:m.start(1)] + cabeza + texto[m.end(1):], encoding="utf-8")
+    archivo.write_bytes(texto.encode("utf-8"))
     return True
 
 
-def escribir_index(carpeta, contenido):
-    destino = carpeta / "index.html"
-    if destino.exists() and MARCA_MANUAL in destino.read_text(encoding="utf-8"):
-        print(f"· {ruta(destino)} (manual, no se toca)")
-        return
-    destino.write_text(contenido, encoding="utf-8")
-    print(f"✔ {ruta(destino)}")
+def es_manual(carpeta):
+    indice = carpeta / "index.html"
+    return indice.exists() and MARCA not in leer(indice)
+
+
+def encabezado(texto):
+    """Texto del primer <h1>..<h6> del ejercicio (suele ser su título), o None."""
+    cuerpo = re.sub(r"<script.*?</script>|<!--.*?-->", "", texto, flags=re.S | re.I)
+    m = re.search(r"<h([1-6])[^>]*>(.*?)</h\1>", cuerpo, re.S | re.I)
+    limpio = " ".join(html.unescape(re.sub(r"<[^>]+>", "", m.group(2))).split()) if m else ""
+    return limpio or None
+
+
+def pagina(tit, pre, desc, cuerpo):
+    return f"""<!DOCTYPE html>
+{MARCA}
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{esc(tit)}</title>
+  <link rel="icon" href="{pre}{ICONO}">
+  <link rel="stylesheet" href="{pre}{ESTILO}">
+  <meta name="description" content="{esc(desc)}">
+  <meta name="author" content="{AUTOR}">
+</head>
+<body class="indice">
+{cuerpo}</body>
+</html>
+"""
+
+
+def fila(clase, href, tit, archivo, info=""):
+    info = f'<span class="info">{esc(info)}</span>' if info else ""
+    return (f'      <li><a class="fila {clase}" href="{esc(href)}"><span class="nombre">{esc(tit)}</span>'
+            f'<span class="ruta">{esc(archivo)}</span>{info}</a></li>\n')
+
+
+def pagina_carpeta(carpeta, carpetas, ejercicios):
+    """carpetas: [(carpeta, info)], ejercicios: [(archivo, título)]. Las carpetas van arriba."""
+    partes = carpeta.relative_to(RAIZ).parts
+    migas = [f'<a href="{a_raiz(carpeta)}index.html">inicio</a>']
+    migas += [f'<a href="{"../" * (len(partes) - i)}index.html">{esc(p)}</a>' for i, p in enumerate(partes[:-1], 1)]
+    migas.append(f"<span>{esc(partes[-1])}</span>")
+    desc = DESCRIPCIONES.get(ruta(carpeta), "")
+    filas = [fila("carpeta", f"{d.name}/index.html", titulo(d), d.name + "/", info) for d, info in carpetas]
+    filas += [fila("archivo", f.name, tit, f.name) for f, tit in ejercicios]
+    cuerpo = f"""  <header class="cabecera">
+    <div>
+      <nav class="migas">{" / ".join(migas)}</nav>
+      <h1>{esc(nombre(carpeta))}</h1>
+      <p>{esc(desc)}</p>
+    </div>
+  </header>
+
+  <main>
+    <ul class="explorador">
+{"".join(filas)}    </ul>
+  </main>
+""".replace("      <p></p>\n", "")
+    return pagina(f"{nombre(carpeta)} · DWEC", a_raiz(carpeta), desc or nombre(carpeta), cuerpo)
+
+
+def pagina_raiz(carpetas):
+    """carpetas: [(carpeta, info)]"""
+    tarjetas = []
+    for d, info in carpetas:
+        m = re.fullmatch(r"tema_(\d+)", d.name)
+        num = f"{int(m.group(1)):02d}" if m else "★"
+        tarjetas.append(f"""    <a class="card" href="{esc(d.name)}/index.html">
+      <span class="num">{num}</span>
+      <h2>{esc(titulo(d))}</h2>
+      <p>{esc(DESCRIPCIONES.get(d.name) or info)}</p>
+    </a>
+""")
+    cuerpo = f"""  <header class="cabecera">
+    <div>
+      <p class="sobretitulo">2º DAW · Curso 2026/27</p>
+      <h1>Desarrollo Web en Entorno Cliente</h1>
+      <p>Robin Jack Schilmöller</p>
+    </div>
+    <a class="repo" href="{REPO}">Repositorio</a>
+  </header>
+
+  <main class="grid">
+{"".join(tarjetas)}  </main>
+"""
+    return pagina("DWEC · Desarrollo Web en Entorno Cliente", "", "Ejercicios de DWEC", cuerpo)
+
+
+def ajustar_ejercicio(archivo, texto):
+    """Devuelve el texto cambiando solo title, description, icono, estilo y enlace de vuelta (si existen)."""
+    carpeta = archivo.parent
+    pre = a_raiz(carpeta)
+    cambios = [
+        (r"(<title>).*?(</title>)", titulo(archivo)),
+        (r'(<meta[^>]*name="description"[^>]*content=")[^"]*(")', f"Ejercicio de {nombre(carpeta)}"),
+        (r'(<link[^>]*rel="icon"[^>]*href=")[^"]*(")', pre + ICONO),
+        (r'(<link[^>]*href=")[^"]*style\.css(")', pre + ESTILO),
+        (r'(<a[^>]*class="back"[^>]*href=")[^"]*(")', "index.html"),
+        (r'(<a[^>]*class="back"[^>]*>).*?(</a>)', f"← Volver a {titulo(carpeta)}"),
+    ]
+    for patron, valor in cambios:
+        texto = re.sub(patron, lambda m: m.group(1) + esc(valor) + m.group(2), texto, count=1, flags=re.S | re.I)
+    return texto
 
 
 def recorrer(carpeta):
-    escribir_index(carpeta, pagina_carpeta(carpeta))
-    for f in sorted(carpeta.glob("*.html"), key=natural):
-        if f.name != "index.html" and arreglar_head(f):
-            print(f"  ✎ head de {ruta(f)}")
-    for d in subcarpetas(carpeta):
-        recorrer(d)
+    """Genera el índice de la carpeta y de sus subcarpetas.
+    Devuelve un texto para quien la enlace ("3 elementos"), o None si no hay nada que enlazar."""
+    if es_manual(carpeta):
+        print(f"· {ruta(carpeta)}/index.html (hecho a mano, no se toca)")
+        return "proyecto"
+    carpetas, archivos = contenido(carpeta)
+    carpetas = [(d, info) for d in carpetas if (info := recorrer(d))]
+    ejercicios = []
+    for f in archivos:
+        original = leer(f)
+        texto = ajustar_ejercicio(f, original)
+        if texto != original:
+            f.write_bytes(texto.encode("utf-8"))
+            print(f"  ✎ {ruta(f)}")
+        ejercicios.append((f, encabezado(texto) or titulo(f)))
+    n = len(carpetas) + len(ejercicios)
+    if not n:
+        return None
+    if escribir(carpeta / "index.html", pagina_carpeta(carpeta, carpetas, ejercicios)):
+        print(f"✔ {ruta(carpeta)}/index.html")
+    return "1 elemento" if n == 1 else f"{n} elementos"
 
 
 def main():
-    escribir_index(RAIZ, pagina_raiz())
-    for d in carpetas_principales():
-        recorrer(d)
+    carpetas = [(d, info) for d in contenido(RAIZ)[0] if (info := recorrer(d))]
+    carpetas.sort(key=lambda c: not c[0].name.startswith("tema_"))  # los temas primero
+    if es_manual(RAIZ):
+        print("· index.html (hecho a mano, no se toca)")
+    elif escribir(RAIZ / "index.html", pagina_raiz(carpetas)):
+        print("✔ index.html")
 
 
 if __name__ == "__main__":

@@ -1,55 +1,134 @@
-:root {
-  --bg: #fafafa; --fg: #1a1a1a; --muted: #6b7280;
-  --card: #ffffff; --border: #e5e7eb; --accent: #2563eb;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1115; --fg: #f3f4f6; --muted: #9ca3af;
-    --card: #171a21; --border: #262b36; --accent: #60a5fa;
-  }
-}
-* { box-sizing: border-box; }
+/* ==========================================================================
+   Base de los ejercicios: fondo blanco, tipografía y márgenes del body.
+   ========================================================================== */
 body {
-  margin: 0; background: var(--bg); color: var(--fg); line-height: 1.6;
+  max-width: 60rem; margin: 0 auto; padding: 2rem 1.25rem;
+  background: #fff; color: #213448; line-height: 1.6;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-header, main, footer { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem; }
-header h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.4rem); }
-header p { margin: .25rem 0 0; color: var(--muted); }
+a { color: #3F6078; }
 
-/* Grid of TEMAs */
-.grid {
-  display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-}
-.card {
-  display: block; padding: 1.25rem; background: var(--card);
-  border: 1px solid var(--border); border-radius: 12px;
-  color: inherit; text-decoration: none;
-  transition: transform .15s, border-color .15s;
-}
-.card:hover { transform: translateY(-3px); border-color: var(--accent); }
-.card .num { color: var(--accent); font-weight: 700; font-size: .85rem; letter-spacing: .08em; }
-.card h2 { margin: .25rem 0; font-size: 1.15rem; }
-.card p { margin: 0; color: var(--muted); font-size: .95rem; }
+/* Enlace de vuelta de los ejercicios */
+.back { display: inline-block; margin-bottom: 1rem; font-weight: 600; text-decoration: none; }
+.back:hover { text-decoration: underline; }
 
-/* TEMA pages */
-.back { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; }
-ul.list { list-style: none; padding: 0; margin: 0; display: grid; gap: .5rem; }
-ul.list a {
-  display: block; padding: .8rem 1rem; background: var(--card);
-  border: 1px solid var(--border); border-radius: 8px;
-  color: inherit; text-decoration: none;
+/* ==========================================================================
+   Estilos de los índices generados (<body class="indice">).
+   Todo cuelga de .indice, así que no afecta a los ejercicios.
+   ========================================================================== */
+.indice {
+  --marino: #213448; --azul: #547792; --celeste: #94B4C1; --crema: #EAE0CF;
+
+  --fondo: var(--crema);
+  --texto: var(--marino);
+  --tenue: #3F6078;              /* texto secundario (azul algo más oscuro, para que se lea) */
+  --acento: var(--azul);
+  --superficie: #F8F3E9;         /* tarjetas y listas */
+  --superficie-carpeta: #DCE7EA; /* filas de carpeta */
+  --borde: #D3C7B1;
+  --icono: var(--celeste);
+  /* colores al pasar el ratón por una tarjeta */
+  --realce: var(--marino); --sobre-realce: var(--crema); --tenue-realce: var(--celeste);
+  --mono: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace;
+
+  /* Iconos incrustados: así también se ven al abrir los .html directamente desde el disco */
+  --icono-archivo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8,18h8V16H8v2Zm0-4h8V12H8v2ZM6,22q-0.82,0-1.41-0.59T4,20V4Q4,3.17 4.59,2.59T6,2h8l6,6V20q0,0.82-0.59,1.41T18,22H6ZM13,9V4H6V20H18V9H13ZM6,4V9V4V9V20V4Z'/%3E%3C/svg%3E");
+  --icono-carpeta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4,20q-0.82,0-1.41-0.59T2,18V6Q2,5.18 2.59,4.59T4,4h6l2,2h8q0.83,0 1.41,0.59Q22,7.18 22,8V18q0,0.82-0.59,1.41T20,20H4Zm0-2H20V8H11.18l-2-2H4V18Zm0,0V6V8V18Z'/%3E%3C/svg%3E");
+  --icono-github: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'/%3E%3C/svg%3E");
+
+  max-width: 60rem; margin: 0 auto; padding: 3.5rem 1.25rem 2rem;
+  background: var(--fondo); color: var(--texto); line-height: 1.6;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-ul.list a:hover { border-color: var(--accent); }
-/* Iconos de archivo/carpeta (las rutas de url() son relativas a este css) */
-ul.list a.archivo, ul.list a.carpeta { display: flex; align-items: center; gap: .6rem; }
-ul.list a.archivo::before, ul.list a.carpeta::before {
-  content: ""; flex: none; width: 20px; height: 20px;
-  background: url(assets/icons/file.svg) center / contain no-repeat;
-}
-ul.list a.carpeta::before { background-image: url(assets/icons/folder.svg); }
 @media (prefers-color-scheme: dark) {
-  ul.list a.archivo::before, ul.list a.carpeta::before { filter: invert(1); }
+  .indice {
+    --fondo: var(--marino);
+    --texto: var(--crema);
+    --tenue: var(--celeste);
+    --acento: var(--celeste);
+    --superficie: #2A4158;
+    --superficie-carpeta: #34516B;
+    --borde: #405C76;
+    --icono: #7FA1B3;
+    --realce: var(--crema); --sobre-realce: var(--marino); --tenue-realce: var(--azul);
+  }
 }
-footer { color: var(--muted); font-size: .85rem; }
+.indice::before {                /* franja superior */
+  content: ""; position: fixed; inset: 0 0 auto 0; height: 6px; background: var(--texto);
+}
+.indice a { text-decoration: none; }
+
+/* Cabecera */
+.cabecera {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;
+  gap: 1rem; margin-bottom: 2.5rem;
+}
+.cabecera h1 { margin: .2rem 0 0; font-size: clamp(1.7rem, 4.5vw, 2.6rem); line-height: 1.15; letter-spacing: -.02em; }
+.cabecera p { margin: .4rem 0 0; color: var(--tenue); }
+.cabecera .sobretitulo, .migas {
+  margin: 0; font: .8rem var(--mono); letter-spacing: .1em; color: var(--tenue);
+}
+.sobretitulo { text-transform: uppercase; }
+.migas a { color: var(--tenue); }
+.migas a:hover { color: var(--texto); text-decoration: underline; }
+.migas span { color: var(--texto); }
+
+/* Botón del repositorio */
+.repo {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .45rem 1rem;
+  border: 1.5px solid var(--texto); border-radius: 99px;
+  color: var(--texto); font-size: .9rem; font-weight: 600;
+  transition: background .15s, color .15s;
+}
+.repo:hover { background: var(--texto); color: var(--fondo); }
+
+/* Iconos: se pintan con mask para que tomen el color de la paleta */
+.repo::before, .fila::before {
+  content: ""; flex: none; width: 1.35rem; height: 1.35rem; background: var(--icono);
+  -webkit-mask: var(--icono-archivo) center / contain no-repeat;
+          mask: var(--icono-archivo) center / contain no-repeat;
+}
+.repo::before { width: 1.1rem; height: 1.1rem; background: currentColor; }
+.repo::before { -webkit-mask-image: var(--icono-github); mask-image: var(--icono-github); }
+.fila.carpeta::before { -webkit-mask-image: var(--icono-carpeta); mask-image: var(--icono-carpeta); }
+
+/* Portada: tarjetas */
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr)); }
+.card {
+  display: flex; flex-direction: column; min-height: 9.5rem; padding: 1.25rem;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+  color: var(--texto);
+  transition: transform .15s, background .15s, color .15s, border-color .15s;
+}
+.card .num { font: 600 2.4rem/1 var(--mono); color: var(--celeste); }
+.card h2 { margin: auto 0 0; padding-top: 1.5rem; font-size: 1.15rem; }
+.card p { margin: .15rem 0 0; color: var(--tenue); font-size: .9rem; }
+.card:hover { transform: translateY(-3px); background: var(--realce); border-color: var(--realce); color: var(--sobre-realce); }
+.card:hover .num, .card:hover p { color: var(--tenue-realce); }
+
+/* Carpetas: lista tipo explorador de archivos */
+.explorador {
+  list-style: none; margin: 0; padding: 0; overflow: hidden;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px;
+}
+.explorador li + li { border-top: 1px solid var(--borde); }
+.fila {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: .9rem;
+  padding: .7rem 1.1rem; color: var(--texto); transition: box-shadow .12s;
+}
+.fila::before { grid-row: 1 / span 2; }
+.fila .nombre { grid-column: 2; font-weight: 500; }
+.fila .ruta { grid-column: 2; font: .78rem var(--mono); color: var(--tenue); overflow-wrap: anywhere; }
+.fila .info { grid-column: 3; grid-row: 1 / span 2; font-size: .8rem; color: var(--tenue); white-space: nowrap; }
+.fila:hover { box-shadow: inset 4px 0 0 var(--acento); }
+.fila:hover .nombre { text-decoration: underline; }
+
+.fila.carpeta { background: var(--superficie-carpeta); }
+.fila.carpeta::before { background: var(--acento); }
+.fila.carpeta .nombre { font-weight: 650; }
+.fila.carpeta .info::after { content: "›"; margin-left: .6rem; font-size: 1.1rem; }
+
+@media (max-width: 30rem) {
+  .fila .info { font-size: 0; }                 /* en móvil solo queda la flecha */
+  .fila.carpeta .info::after { margin-left: 0; }
+}
